@@ -33,7 +33,8 @@ public class MemberView {
       System.out.println("     [1] 게임 시작       ");
       System.out.println("     [2] 게임 설명       ");
       System.out.println("     [3] 점수 조회       ");
-      System.out.println("     [4] 게임 종료       ");
+      System.out.println("     [4] 로그 아웃       ");      
+      System.out.println("     [5] 게임 종료       ");
       System.out.println(" ═════════════════════");
       System.out.print("선택: ");
       int input2 = sc.nextInt();

@@ -28,40 +28,45 @@ public class MemberController {
 	}
 
 	public void run() {
-	       while (true) {
-	           int input1 = view.showMenu1();
-	           if (input1 == 1) {
-	               MemberVO mvo = view.showLogin();
-	               String result = dao.login(mvo);
 
-	               view.statusLogin(result);   // <-- 여기서 모든 경우 처리
-
-	               if (!"NO_ID".equals(result) && 
-	                   !"WRONG_PW".equals(result) && 
-	                   !"ERROR".equals(result) && 
-	                   result != null) {
-	                   // 로그인 성공했을 때만 다음 메뉴 이동
-	                   mvo.setName(result);
-	                   int nextMenu = view.showMenu2();
-	                   if (nextMenu == 1) {
-	                       playGame(mvo);
-	                   } else if (nextMenu == 2) {
-	                       view.showRule();
-	                   } else if (nextMenu == 3) {
-	                       view.showFind(dao.showFind());
-	                       dao.gameStats();
-	                   } else {
-	                       view.showError();
-	                   }
-	               }
-	           } else if (input1 == 2) {
-	               int row = dao.Join(view.showJoin());
-	               view.statusJoin(row);
-	           } else if (input1 == 3) {
-	               view.endGame();
-	           } else {
-	               view.showError();
-	           }
-	       }
+		outer: while (true) {
+			int input1 = view.showMenu1();
+			if (input1 == 1) {
+				MemberVO mvo = view.showLogin();
+				String result = dao.login(mvo);
+				view.statusLogin(result); // <-- 여기서 모든 경우 처리
+				if (!"NO_ID".equals(result) && !"WRONG_PW".equals(result) && !"ERROR".equals(result)
+						&& result != null) {// 로그인 성공했을 때만 다음 메뉴 이동
+					mvo.setName(result);
+					while (true) {
+						int nextMenu = view.showMenu2();
+						if (nextMenu == 1) {
+							playGame(mvo);
+							continue;
+						} else if (nextMenu == 2) {
+							view.showRule();
+						} else if (nextMenu == 3) {
+							view.showFind(dao.showFind());
+							dao.gameStats();
+						} else if (nextMenu == 4) {
+							// 로그아웃 로그아웃시 로그인 화면으로 이동
+							continue outer;
+						} else if (nextMenu == 5) {
+							view.endGame();
+							break;
+						} else {
+							view.showError();
+						}
+					}
+				}
+			} else if (input1 == 2) {
+				int row = dao.Join(view.showJoin());
+				view.statusJoin(row);
+			} else if (input1 == 3) {
+				view.endGame();
+			} else {
+				view.showError();
+			}
+		}
 	}
 }
