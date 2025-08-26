@@ -112,6 +112,7 @@ public class NumberBaseballGame {
 			    mvo.setResult("성공");
 			    mvo.setPoint(point);
 			    dao.saveResult(mvo);
+			    count = 0;
 				break;	
 				
 			}
@@ -124,6 +125,7 @@ public class NumberBaseballGame {
 			    mvo.setResult("실패");
 			    mvo.setPoint(point);
 			    dao.saveResult(mvo);
+			    count = 0;
 				break;
 			} 
 			view.printResult(s, b, count);	 // 아직 안 끝났을 때 결과 출력
