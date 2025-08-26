@@ -189,11 +189,7 @@ public class MemberDAO {
 			psmt.setInt(4, mvo.getCount());
 
 			int row = psmt.executeUpdate();
-			if (row > 0) {
-				System.out.println("게임 결과가 DB에 저장되었습니다.");
-			} else {
-				System.out.println("게임 결과 저장 실패.");
-			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
