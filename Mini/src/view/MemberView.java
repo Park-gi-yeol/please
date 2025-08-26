@@ -12,7 +12,7 @@ public class MemberView {
    // 게임 시작 화면
    public int showMenu1() {
       System.out.println(" ══════════════════════");
-      System.out.println("║     ⚾ 메인 메뉴 ⚾      ║");
+      System.out.println("      ⚾ 메인 메뉴 ⚾      ");
       System.out.println(" ══════════════════════");
       System.out.println("     [1] 로그인         ");
       System.out.println("     [2] 회원가입        ");
@@ -28,7 +28,7 @@ public class MemberView {
    // 로그인 후 화면
    public int showMenu2() {
       System.out.println(" ═════════════════════");
-      System.out.println("║    ⚾ 게임 메뉴 ⚾     ║");
+      System.out.println("     ⚾ 게임 메뉴 ⚾     ");
       System.out.println(" ═════════════════════");
       System.out.println("     [1] 게임 시작       ");
       System.out.println("     [2] 게임 설명       ");
@@ -44,7 +44,7 @@ public class MemberView {
    // 로그인 정보 입력 메소드
    public MemberVO showLogin() {
       System.out.println(" ═════════════════════");
-      System.out.println("║      ⚾ 로그인 ⚾      ║");
+      System.out.println("       ⚾ 로그인 ⚾      ");
       System.out.println(" ═════════════════════");
       System.out.print("ID 입력 : ");
       String id = sc.next();
@@ -58,19 +58,25 @@ public class MemberView {
       return mvo;
    }
 
-   // 로그인 성공 여부를 출력하는 메소드
-   public void statusLogin(String name) {
-      System.out.println(" ══════════════════════");
-      if (name != null) {
-         System.out.println("⚾ 로그인 성공 ! ⚾");
-         System.out.printf(" %-17s님 환영합니다 ! %n", name); // 이름 길이 고려하여 출력 조정
-      } else {
-         System.out.println("❌ 로그인 실패.          ");
-      }
-      System.out.println(" ══════════════════════");
-   }
+   // 로그인 성공 여부를 출력하는 메소드 //
+   public void statusLogin(String result) {
 
-   // 회원가입 정보 입력 메소드
+	      if ("NO_ID".equals(result)) {
+	         System.out.println("⚠ 존재하지 않는 회원입니다. 회원가입 후 이용해주세요.");
+	      } else if ("WRONG_PW".equals(result)) {
+	         System.out.println("❌ 비밀번호가 올바르지 않습니다. 다시 입력해주세요.");
+	      } else if ("ERROR".equals(result)) {
+	         System.out.println("⚠ 시스템 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+	      } else if (result != null) {
+	         // 로그인 성공 (result == 회원 이름)
+	         System.out.println("로그인 성공 !");
+	         System.out.println(result + "님 환영합니다 !");
+	      } else {
+	         System.out.println("로그인 실패 (알 수 없는 이유).");
+	      }
+	   }
+
+   // 회원가입 정보 입력 메소드 
    public MemberVO showJoin() {
       System.out.println(" ══════════════════════");
       System.out.println("║     ⚾ 회원 가입 ⚾      ║");
@@ -103,11 +109,11 @@ public class MemberView {
    // 난이도 선택 출력 메소드
    public int levelMenu() {
       System.out.println("╔═══════════════════╗");
-      System.out.println("║    ⚾ 난이도 선택 ⚾  ║");
+      System.out.println("    ⚾ 난이도 선택 ⚾  ");
       System.out.println("╠═══════════════════╣");
-      System.out.println("║ [1] Easy 🟢       ║");
-      System.out.println("║ [2] Normal 🟡     ║");
-      System.out.println("║ [3] Hard 🔴       ║");
+      System.out.println("  [1] Easy 🟢       ");
+      System.out.println("  [2] Normal 🟡     ");
+      System.out.println("  [3] Hard 🔴       ");
       System.out.println("╚═══════════════════╝");
       System.out.print("선택: ");
       int level = sc.nextInt();
@@ -125,23 +131,23 @@ public class MemberView {
    // 사용자가 잘못 입력했을 경우 출력
    public void userWrong() {
       System.out.println("╔═══════════════════════╗");
-      System.out.println("║ ❌ 자릿수가 일치하지 않습니다. ║");
-      System.out.println("║ 다시 입력하세요.           ║");
+      System.out.println("  ❌ 자릿수가 일치하지 않습니다. ");
+      System.out.println("  다시 입력하세요.           ");
       System.out.println("╚═══════════════════════╝");
    }
 
    // 정답을 맞췄을 시 게임 출력
    public void success(String num, int count) {
-      System.out.println("╔══════════════════════════════╗");
-      System.out.println("║ 🎉 " + num + " 정답입니다 !!     ║");
-      System.out.println("║ 총 " + count + "회 시도했습니다 !  ║");
-      System.out.println("╚══════════════════════════════╝");
+      System.out.println("════════════════════════════════");
+      System.out.println(" 🎉 " + num + " 정답입니다 !!     ");
+      System.out.println(" 총 " + count + "회 시도했습니다 !  ");
+      System.out.println("════════════════════════════════");
    }
 
    // 실패 했을 시 게임 출력
    public void fail(int length, int[] answer) {
       System.out.println("╔══════════════════════════╗");
-      System.out.println("  😭 정답을 맞추는 데 실패했습니다.");
+      System.out.println("  😭 오답입니다.");
       System.out.print("  정답은 ");
       for (int i = 0; i < length; i++) {
          System.out.print(answer[i]);
@@ -186,14 +192,14 @@ public class MemberView {
    public void printResult(int s, int b, int count) {
       System.out.println("╔═══════════════════╗");
       System.out.println("  시도 횟수: " + count + "       ");
-      System.out.println("  스트라이크: " + s + ", 볼: " + b + "   ");
+      System.out.println("  스트라이크: " + s + "  볼: " + b + "   ");
       System.out.println("╚═══════════════════╝");
    }
 
    // 정답 생성 알림 메소드
    public void gameStart() {
       System.out.println("╔═════════════════════╗");
-      System.out.println("║ ⚾ 정답이 생성되었습니다!  ║");
+      System.out.println("  ⚾ 정답이 생성되었습니다!  ");
       System.out.println("╚═════════════════════╝");
    }
 
@@ -209,7 +215,7 @@ public class MemberView {
    // 게임 종료 메소드
    public void endGame() {
       System.out.println("╔═══════════════════╗");
-      System.out.println("║ 👋 게임이 종료되었습니다.║");
+      System.out.println(" 👋 게임이 종료되었습니다.");
       System.out.println("╚═══════════════════╝");
    }
 
@@ -259,22 +265,37 @@ public class MemberView {
    }
 
    // 회원 정보 조회 메소드
-   public void showFind(ArrayList<MemberVO> list) {
-      System.out.println("╔══════════════════════╗");
-      System.out.println("║   ⚾ 회원 정보 조회 ⚾    ║");
-      System.out.println("╠══════════════════════╣");
-      System.out.println("  ID\t\t이름            ");
-      System.out.println("╚══════════════════════╝");
-      for (MemberVO i : list) {
-         System.out.printf("   %-6s\t\t%-10s                     %n", i.getId(), i.getName()); // 형식 지정으로 출력 정렬
-      }
-      System.out.println("═══════════════════════");
-   }
+   public void showStats(ArrayList<MemberVO> list) {
+	      System.out.println("╔══════════════════════╗");
+	      System.out.println("    ⚾ 회원 통계 조회 ⚾   ");
+	      System.out.println("╚══════════════════════╝");
+	      System.out.println("회원ID\t   | 총점\t     | 평균시도\t  | 승률(%)");
+	          for (MemberVO mvo : list) {
+	        	  System.out.printf("%-10s | %-7d | %-10.2f | %-7.2f%%%n",
+	                      mvo.getId(),
+	                      mvo.getTotalScore(),
+	                      mvo.getAvgTry(),
+	                      mvo.getWinRate());
+	          }
+	      }
 
    // 잘못 입력 시 출력
    public void showError() {
       System.out.println("╔═══════════════════╗");
-      System.out.println("║ ⚠️ 잘못 입력하였습니다. ║");
+      System.out.println("  ⚠️ 잘못 입력하였습니다. ");
       System.out.println("╚═══════════════════╝");
    }
+// 로그아웃 성공 메소드
+   public void showLogout() {
+	   System.out.println("====================================================");
+	   
+       System.out.println("        | |    ___   __ _    ___  _   _| |_ ");
+       System.out.println("        | |   / _ \\ / _` |  / _ \\| | | | __| ");
+       System.out.println("        | |__| (_) | (_| | | (_) | |_| | |_  ");
+       System.out.println("        |_____|\\___/ \\__,|  \\___/ \\__,_|\\__| ");
+       System.out.println("                     |___/                   ");
+       System.out.println("====================================================");
+   }
+   
+
 }

@@ -94,35 +94,53 @@ public class MemberDAO {
 	   }
 
 	// 점수 기록 메소드
-	public void gameStats() {
-		try {
-			getConn(); // DB 연결
+	public ArrayList<MemberVO> showStats() {
+	       ArrayList<MemberVO> list = new ArrayList<>();
+	       try {
+	           getConn();
 
-			String sql = "SELECT MEMBER_ID, " + "SUM(SCORE) AS TOTAL_SCORE, " + "ROUND(AVG(COUNT_TRY), 2) AS AVG_TRY, "
-					+ "ROUND(SUM(CASE WHEN RESULT='성공' THEN 1 ELSE 0 END) / COUNT(*) * 100, 2) AS WIN_RATE "
-					+ "FROM GAME " + "GROUP BY MEMBER_ID " + "ORDER BY TOTAL_SCORE DESC";
+	           // 1. GAME → RESULT 통계 갱신
+	           String mergeSql = "MERGE INTO RESULT r " +
+	                             "USING ( " +
+	                             "  SELECT MEMBER_ID, SUM(SCORE) AS TOTAL_SCORE, " +
+	                             "         ROUND(AVG(COUNT_TRY),2) AS AVG_TRY, " +
+	                             "         ROUND(SUM(CASE WHEN RESULT='성공' THEN 1 ELSE 0 END)/COUNT(*)*100,2) AS WIN_RATE " +
+	                             "  FROM GAME " +
+	                             "  GROUP BY MEMBER_ID " +
+	                             ") g " +
+	                             "ON (r.MEMBER_ID = g.MEMBER_ID) " +
+	                             "WHEN MATCHED THEN " +
+	                             "  UPDATE SET r.TOTAL_SCORE = g.TOTAL_SCORE, r.AVG_TRY = g.AVG_TRY, r.WIN_RATE = g.WIN_RATE " +
+	                             "WHEN NOT MATCHED THEN " +
+	                             "  INSERT (MEMBER_ID, TOTAL_SCORE, AVG_TRY, WIN_RATE) " +
+	                             "  VALUES (g.MEMBER_ID, g.TOTAL_SCORE, g.AVG_TRY, g.WIN_RATE)";
+	           
+	           psmt = conn.prepareStatement(mergeSql);
+	           psmt.executeUpdate();
+	           psmt.close();
 
-			psmt = conn.prepareStatement(sql);
-			rs = psmt.executeQuery();
+	           // 2. RESULT 테이블에서 통계 조회
+	           String selectSql = "SELECT MEMBER_ID, TOTAL_SCORE, AVG_TRY, WIN_RATE FROM RESULT ORDER BY TOTAL_SCORE DESC";
+	           psmt = conn.prepareStatement(selectSql);
+	           rs = psmt.executeQuery();
 
-			System.out.println("회원ID | 총점 | 평균 시도 | 승률(%)");
-			System.out.println("-------------------------------");
+	           while(rs.next()) {
+	               MemberVO mvo = new MemberVO();
+	               mvo.setId(rs.getString("MEMBER_ID"));
+	               mvo.setTotalScore(rs.getInt("TOTAL_SCORE"));
+	               mvo.setAvgTry(rs.getDouble("AVG_TRY"));
+	               mvo.setWinRate(rs.getDouble("WIN_RATE"));
+	               list.add(mvo);
+	           }
 
-			while (rs.next()) {
-				String id = rs.getString("MEMBER_ID"); // MEMBER_ID 컬럼
-				int totalScore = rs.getInt("TOTAL_SCORE");
-				double avgTry = rs.getDouble("AVG_TRY");
-				double winRate = rs.getDouble("WIN_RATE");
+	       } catch(SQLException e) {
+	           e.printStackTrace();
+	       } finally {
+	           getClose();
+	       }
 
-				System.out.printf("%s | %d | %.2f | %.2f%%\n", id, totalScore, avgTry, winRate);
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			getClose(); // 자원 반납
-		}
-	}
+	       return list;
+	   }
 
 
 	// 회원조회
@@ -140,11 +158,9 @@ public class MemberDAO {
 
 			while (rs.next()) {
 				MemberVO mvo = new MemberVO();
-				String id = rs.getString("MEMBER_ID");
-				String name = rs.getString("NAME");
+//				String id = rs.getString("MEMBER_ID");
+//				String name = rs.getString("NAME");
 
-				mvo.setId(id);
-				mvo.setName(name);
 
 				list.add(mvo);
 

@@ -37,16 +37,23 @@ public class NumberBaseballGame {
 	// 컴퓨터가 정답 생성하는 메소드
 	public void createAnswer() {
 		//
-		level = view.levelMenu();
-		if (level == 1) {
-			maxAttempts = 10;
-			length = 3;
-		} else if (level == 2) {
-			maxAttempts = 20;
-			length = 4;
-		} else {
-			maxAttempts = 30;
-			length = 5;
+		while (true) {
+			level = view.levelMenu();
+			if (level == 1) {
+				maxAttempts = 10;
+				length = 3;
+				break;
+			} else if (level == 2) {
+				maxAttempts = 20;
+				length = 4;
+				break;
+			} else if (level == 3) {
+				maxAttempts = 30;
+				length = 5;
+				break;
+			} else {
+				view.showError();
+			}
 		}
 		answer = new int[length];
 		for (int i = 0; i < length; i++) {
@@ -59,7 +66,7 @@ public class NumberBaseballGame {
 			}
 		}
 		view.gameStart();
-		//view.testView(length, answer);
+		// view.testView(length, answer);
 	}
 
 	// 유저가 정답 입력하는 메소드
@@ -102,33 +109,33 @@ public class NumberBaseballGame {
 			}
 
 			count++; // 시도 횟수 증가
-			
+
 			if (s == length) {
 				view.success(num, count);
 				int point = view.gamePoint(count, level, result);
 				view.endGame();
 				// 결과 담기
-			    mvo.setCount(count);
-			    mvo.setResult("성공");
-			    mvo.setPoint(point);
-			    dao.saveResult(mvo);
-			    count = 0;
-				break;	
-				
+				mvo.setCount(count);
+				mvo.setResult("성공");
+				mvo.setPoint(point);
+				dao.saveResult(mvo);
+				count = 0;
+				break;
+
 			}
 			if (count > maxAttempts) {
 				view.fail(length, answer);
 				int point = view.gamePoint(count, level, result);
 				view.endGame();
-				//결과담기
+				// 결과담기
 				mvo.setCount(count);
-			    mvo.setResult("실패");
-			    mvo.setPoint(point);
-			    dao.saveResult(mvo);
-			    count = 0;
+				mvo.setResult("실패");
+				mvo.setPoint(point);
+				dao.saveResult(mvo);
+				count = 0;
 				break;
-			} 
-			view.printResult(s, b, count);	 // 아직 안 끝났을 때 결과 출력
+			}
+			view.printResult(s, b, count); // 아직 안 끝났을 때 결과 출력
 		}
 	}
 

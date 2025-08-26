@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -46,10 +47,11 @@ public class MemberController {
 						} else if (nextMenu == 2) {
 							view.showRule();
 						} else if (nextMenu == 3) {
-							view.showFind(dao.showFind());
-							dao.gameStats();
+							ArrayList<MemberVO> list = dao.showStats(); // DAO에서 GAME→RESULT 업데이트 + 통계 조회
+							view.showStats(list); // 화면에 통계 출력
 						} else if (nextMenu == 4) {
 							// 로그아웃 로그아웃시 로그인 화면으로 이동
+							view.showLogout();
 							continue outer;
 						} else if (nextMenu == 5) {
 							view.endGame();
@@ -58,6 +60,8 @@ public class MemberController {
 							view.showError();
 						}
 					}
+				} else {
+					
 				}
 			} else if (input1 == 2) {
 				int row = dao.Join(view.showJoin());
