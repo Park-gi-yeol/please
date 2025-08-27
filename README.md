@@ -1,14 +1,13 @@
-# portfolioio.io# :pushpin: goQuality
->고퀄리티 개발 컨텐츠 공유 서비스  
-> 데모사이트 링크
+# ⚾ 숫자 야구 게임 (Number Baseball Game)
 
-</br>
+자바 콘솔 기반의 숫자 추리 게임  
+**회원 가입 → 로그인 → 난이도 선택 → 게임 플레이 → 점수 저장 & 랭킹 조회**
 
-## 1. 제작 기간 & 참여 인원
-- 2025년 8월 22일 ~ 8월 27일
-- ####팀 프로젝트
-  ##### 👥 팀 구성
+---
 
+## 📅 제작 기간 & 참여 인원
+- 2025.08.22 ~ 2025.08.27  
+- 팀 프로젝트 (4인)
 | 역할   | 이름   | 담당 업무       |
 |--------|--------|----------------|
 | 팀장   | 박기열 | 설계 담당       |
@@ -16,12 +15,42 @@
 | 팀원   | 김주성 | 문서 담당       |
 | 팀원   | 유도경 | 오류 점검 담당   |
 
+---
+
+## 🛠 사용 기술
+- **Back-end / Logic**
+  - Java 11
+  - JDBC (ORACLE DB 11g 연동
+  - MVC 패턴 기반 설계
+
+- **Database**
+  - MySQL 8.0
+  - SQL (DDL, DML)
+
+- **Tool / Environment**
+  - Eclipse
+  - Git / GitHub
+
+---
+
+## 📂 프로젝트 구조 (MVC)
+
+```plaintext
+src
+ ┣ controller
+ ┃ ┣ NumberBaseballGame.java   // 게임 진행 로직
+ ┃ ┗ MemberController.java     // 전체 흐름 제어
+ ┣ model
+ ┃ ┣ MemberDAO.java            // DB 연결 및 CRUD
+ ┃ ┗ MemberVO.java             // 회원 데이터 객체
+ ┣ view
+ ┃ ┗ MemberView.java           // 화면 출력 및 입력 처리
+ ┗ Main.java                   // 실행 진입점
+
 
 </br>
 
-## 2. 사용 기술
-  - Java 11  
-  - ORACLE DB 11g
+
 
 </br>
 
