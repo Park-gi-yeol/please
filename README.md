@@ -157,7 +157,7 @@ src
     - `.gitignore` 파일 생성하여 `.metadata` 제외 시도
     - 여전히 충돌 문제 해결되지 않음
 
-## ❓ 분석 단계
+#### ❓ 분석 단계
 
 | --- | --- |
 | **원인** | **사전 상황**  
@@ -178,6 +178,156 @@ src
 **p.s**
 - **`.gitignore` 파일 관련**: 시도 3에서 직접 생성하려 했던 `.gitignore` 파일은 실제로는 **Pull 과정에서 자동 생성됨**. 따라서 별도로 만들 필요 없음.
 - **`.metadata` 충돌 문제**: `.gitignore`에 의해 자동으로 제외되므로 충돌 없이 GitHub 사용 가능.
+
+### 5.1. Git-hub 연결
+#### ❓ 분석 단계
+
+| **클래스 명** | allLogic |
+| --- | --- |
+| **이슈 사항** | 단일 명령문을 따로 실행하는 도중 실행 후 **ORA-02291** 발생 |
+| **원인** | **코드 목적** : 게임을 진행하면서 게임 기록을 DB 테이블에 저장  
+→ M_ID의 값을 테이블에 넣으려 했지만, M_ID는 아직 회원 테이블에 존재하지 않음 |
+
+## ⁉ 해결 단계
+
+- **시도. 시도한 내용**
+    
+    : test목적의 클래스를 생성하여 기능확인을 하고자 했으나, **ORA-02291** 코드가 생성되어 일단 원본 클래스의 로그인 기능까지 가져와서 test 실행.
+
+## ❗ 해결 완료
+
+| **해결 방법** | member 정보가 먼저 생성되도록 수정하는 **로그인 기능을 추가**  
+→ 일단 실행 후 해결된 이유 도출  
+→ 로그인 시 사용자 정보 등록과 조회 후 M_ID를 확보  
+→ 게임 중 데이터 삽입 시 외래 키 제약 조건 충족 |
+
+**해결 완료 코드**
+
+<details>
+  <summary>코드 보기</summary>
+  
+  ```java
+  package allLogic;
+
+  import java.sql.*;
+  import java.util.ArrayList;
+  import java.util.Random;
+  import java.util.Scanner;
+
+  public class startGame2 {
+
+      System.out.println("===== 게임 시작 =====");
+      System.out.println("난이도를 선택하세요. [1] EASY [2] NORMAL [3] HARD");
+      int level = sc.nextInt();
+
+      int count = 0;
+      int maxAttempts = 0;
+
+      if (level == 1) {
+          count = 3;
+          maxAttempts = 10;
+      } else if (level == 2) {
+          count = 4;
+          maxAttempts = 20;
+      } else if (level == 3) {
+          count = 5;
+          maxAttempts = 30;
+      }
+
+      playGame(count, level, maxAttempts, memberId);
+  }
+
+ // 로그인 또는 회원 등록 -> 추가한 부분
+  private static boolean loginOrRegister(String memberId, String memberPw) {
+      Connection conn = null;
+      PreparedStatement psmt = null;
+      ResultSet rs = null;
+      boolean success = false;
+
+      try {
+          String url = "jdbc:oracle:thin:@project-db-cgi.smhrd.com:1524:xe";
+          String user = "CGI_25IS_GA_P1_4";
+          String password = "smhrd4";
+
+          conn = DriverManager.getConnection(url, user, password);
+
+          // MEMBER 테이블에서 아이디 확인
+          String sql = "SELECT MEMBER_PW FROM MEMBER WHERE MEMBER_ID = ?";
+          psmt = conn.prepareStatement(sql);
+          psmt.setString(1, memberId);
+          rs = psmt.executeQuery();
+
+          if (rs.next()) {
+              // 이미 회원 존재 -> 비밀번호 확인
+              String dbPw = rs.getString("MEMBER_PW");
+              if (dbPw.equals(memberPw)) {
+                  success = true;
+                  System.out.println("로그인 성공!");
+              } else {
+                  System.out.println("비밀번호가 일치하지 않습니다.");
+              }
+          } else {
+              // 회원이 없으면 자동 등록
+              rs.close();
+              psmt.close();
+
+              String insertSql = "INSERT INTO MEMBER(MEMBER_ID, MEMBER_PW, NAME) VALUES (?, ?, ?)";
+              psmt = conn.prepareStatement(insertSql);
+              psmt.setString(1, memberId);
+              psmt.setString(2, memberPw);
+              psmt.setString(3, "자동등록");
+              int row = psmt.executeUpdate();
+              if (row > 0) {
+                  success = true;
+                  System.out.println("회원 등록 완료, 로그인 성공!");
+              }
+          }
+
+      } catch (Exception e) {
+          e.printStackTrace();
+      } finally {
+          try {
+              if (rs != null) rs.close();
+              if (psmt != null) psmt.close();
+              if (conn != null) conn.close();
+          } catch (Exception e) {
+              e.printStackTrace();
+          }
+      }
+
+      return success;
+  }
+
+  public static void playGame(int count, int level, int maxAttempts, String memberId) {
+      Scanner sc = new Scanner(System.in);
+      Random rd = new Random();
+
+      ArrayList<Integer> number = new ArrayList<>();
+      while (number.size() < count) {
+          int num = rd.nextInt(10);
+          if (!number.contains(num)) {
+              number.add(num);
+          }
+      }
+
+      System.out.println("게임 시작 " + count + "자리, 최대 시도 가능 횟수 : " + maxAttempts);
+      int attempts = 0;
+      boolean correct = false;
+
+      while (!correct && attempts < maxAttempts) {
+          System.out.println("숫자 입력 : ");
+          String input = sc.next();
+
+          int strike = 0;
+          int ball = 0;
+
+          for (int i = 0; i < count; i++) {
+              int userNum = Character.getNumericValue(input.charAt(i));
+              if (number.get(i) == userNum)
+                  strike++;
+              else if (number.contains(userNum))
+
+
 
 
 </br>
