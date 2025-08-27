@@ -259,8 +259,6 @@ return success;
 </details>
 </br>
 
-**해결 완료 코드**
-
 <details>
   <summary>코드 보기</summary>
   
@@ -386,7 +384,6 @@ return success;
               else if (number.contains(userNum))
 
 </details>
-
 
 
 </br>
