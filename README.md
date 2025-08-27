@@ -132,10 +132,7 @@ src
 2. `NumberBaseballGame`에서 선택된 난이도에 맞는 게임을 설정합니다.
 3. 사용자가 숫자를 추측하여 게임을 진행합니다.
 4. `NumberBaseballGame`에서 정답을 비교하고, 결과를 화면에 표시합니다.
-</details>
 
-<details>
-  <summary>5.3 그 이후 흐름</summary>
   - **게임 결과 처리**:
     - 게임 결과(정답 맞추기/틀리기)를 `NumberBaseballGame`에서 확인하고, 결과를 화면에 표시합니다.
     - 게임 종료 후, 다시 메인 메뉴나 게임 재시작을 선택할 수 있는 흐름으로 이어집니다.
