@@ -20,25 +20,13 @@
 </br>
 
 ## 2. 사용 기술
-#### `Back-end`
-  - Java 8
-  - Spring Boot 2.3
-  - Gradle
-  - Spring Data JPA
-  - QueryDSL
-  - H2
-  - MySQL 5.7
-  - Spring Security
-  - Jsoup
-#### `Front-end`
-  - Vue.js 3.0
-  - Element UI
+  - Java 11  
+  - ORACLE DB 11g
 
 </br>
 
 ## 3. ERD 설계
-![](https://zuminternet.github.io/images/portal/post/2019-04-22-ZUM-Pilot-integer/final_erd.png)
-![](https://github.com/JungHyung2/gitio.io/blob/master/assets/images/portfolio/p1.jpg)
+![](https://www.notion.so/sdtunit032526/256ae0eec9558175b5d9c7ae61aba0bc?source=copy_link#257ae0eec95580dbb415d4cac22c9519)
 
 
 ## 4. 핵심 기능
