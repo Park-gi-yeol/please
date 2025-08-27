@@ -55,7 +55,7 @@ src
 </br>
 
 ## 3. ERD 설계
-![ERD](https://www.notion.so/sdtunit032526/3-ER-256ae0eec95581959399cc35d1e494392?source=copy_link#257ae0eec955802f80b2e083a476c9fe)
+![ERD](https://blogger.googleusercontent.com/img/a/AVvXsEi7V1oDAnFlLCN4UQFdyZp2wr0e9W5EUfHBL1GwDCupc_tGxHUib8FRiIwdgRWeoaTWpZLIrDAuGTXp5PNaE8rps5vkHbcnQUzBYELUXr5d3jUTls6On12sB19S0_4Jgpj53PTZYd7G8aXI2HtD5WGdy_FkyK11_cXnp-r-gs3Nyj7KjhlfQObC5O6bUujt))
 
 ## 4. 핵심 기능
 이 서비스의 핵심 기능은 컨텐츠 등록 기능입니다.  
