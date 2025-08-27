@@ -201,6 +201,61 @@ src
 → 로그인 시 사용자 정보 등록과 조회 후 M_ID를 확보  
 → 게임 중 데이터 삽입 시 외래 키 제약 조건 충족 |
 
+**해결 전 코드**
+
+try {
+    String url = "jdbc:oracle:thin:@project-db-cgi.smhrd.com:1524:xe";
+    String user = "CGI_25IS_GA_P1_4";
+    String password = "smhrd4";
+
+    conn = DriverManager.getConnection(url, user, password);
+
+    // MEMBER 테이블에서 아이디 확인
+    String sql = "SELECT MEMBER_PW FROM MEMBER WHERE MEMBER_ID = ?";
+    psmt = conn.prepareStatement(sql);
+    psmt.setString(1, memberId);
+    rs = psmt.executeQuery();
+
+    if (rs.next()) {
+        // 이미 회원 존재 -> 비밀번호 확인
+        String dbPw = rs.getString("MEMBER_PW");
+        if (dbPw.equals(memberPw)) {
+            success = true;
+            System.out.println("로그인 성공!");
+        } else {
+            System.out.println("비밀번호가 일치하지 않습니다.");
+        }
+    } else {
+        // 회원이 없으면 자동 등록
+        rs.close();
+        psmt.close();
+
+        String insertSql = "INSERT INTO MEMBER(MEMBER_ID, MEMBER_PW, NAME) VALUES (?, ?, ?)";
+        psmt = conn.prepareStatement(insertSql);
+        psmt.setString(1, memberId);
+        psmt.setString(2, memberPw);
+        psmt.setString(3, "자동등록");
+        int row = psmt.executeUpdate();
+        if (row > 0) {
+            success = true;
+            System.out.println("회원 등록 완료, 로그인 성공!");
+        }
+    }
+
+} catch (Exception e) {
+    e.printStackTrace();
+} finally {
+    try {
+        if (rs != null) rs.close();
+        if (psmt != null) psmt.close();
+        if (conn != null) conn.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+return success;
+
 **해결 완료 코드**
 
 <details>
