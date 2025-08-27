@@ -233,7 +233,7 @@ WHEN NOT MATCHED THEN
 ---
 
 ## 🪞 회고 / 느낀점
-> 🔗 [프로젝트 회고 블로그 보기](https://zuminternet.github.io/ZUM-Pilot-integer/)
+> 🔗 [프로젝트 회고 Notion 보기](https://www.notion.so/sdtunit032526/6-KPT-256ae0eec955813fab01c621e5ad6f00)
 
 - 협업 중 Git 충돌, DB 오류, 외래키 제약 조건 등 다양한 문제에 부딪힘
 - 실무에서 발생할 수 있는 트러블을 경험하며, 이를 문서화하고 해결해보는 좋은 기회였음
