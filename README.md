@@ -202,7 +202,8 @@ src
 → 게임 중 데이터 삽입 시 외래 키 제약 조건 충족 |
 
 **해결 전 코드**
-
+<details>
+  <summary>코드 보기</summary>
 try {
     String url = "jdbc:oracle:thin:@project-db-cgi.smhrd.com:1524:xe";
     String user = "CGI_25IS_GA_P1_4";
