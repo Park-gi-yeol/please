@@ -126,7 +126,7 @@ public class NumberBaseballGame {
 				break;
 
 			}
-			if (count > maxAttempts) {
+			if (count == maxAttempts) {
 				//시도 횟수가 난이도별 총 시도횟수보다 넘어 섰을 경우 실패 
 				view.fail(length, answer);
 				int point = view.gamePoint(count, level, result);
