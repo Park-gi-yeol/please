@@ -258,7 +258,7 @@ try {
 return success;
 </details>
 </br>
-
+**해결 전 코드**
 <details>
   <summary>코드 보기</summary>
   
