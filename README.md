@@ -42,7 +42,12 @@ src
 ---
 
 ## 🧱 ERD 설계
-![ERD 이미지](https://blogger.googleusercontent.com/img/a/AVvXsEi7V1oDAnFlLCN4UQFdyZp2wr0e9W5EUfHBL1GwDCupc_tGxHUib8FRiIwdgRWeoaTWpZLIrDAuGTXp5PNaE8rps5vkHbcnQUzBYELUXr5d3jUTls6On12sB19S0_4Jgpj53PTZYd7G8aXI2HtD5WGdy_FkyK11_cXnp-r-gs3Nyj7KjhlfQObC5O6bUujt)
+## ​ ERD 설계
+
+## ​ ERD 설계
+
+![ERD 이미지](https://blogger.googleusercontent.com/img/a/AVvXsEhHI7l5w5TLk1KKsSJKI92vCp4DRjETbEInMoAX_zwySr-TBkOwCcwbc3EKqn8NRd8d4nOSb-KTaWzfEkr6ou7ERiF8-i6O36A5zg4pun1sjBm71O2U2ZmWzMlHjyaB_AIDfOKV9smRHsXRyhR1i23kjtuOnJWStzXdDLzPCEqGWjxh43RaJEjGv_frJ6lZ)
+
 
 ---
 
