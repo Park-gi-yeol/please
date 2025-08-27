@@ -256,6 +256,8 @@ try {
 }
 
 return success;
+</details>
+</br>
 
 **해결 완료 코드**
 
@@ -383,6 +385,7 @@ return success;
                   strike++;
               else if (number.contains(userNum))
 
+</details>
 
 
 
