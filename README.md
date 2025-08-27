@@ -116,7 +116,6 @@ src
     - 저장된 데이터는 `MemberController`를 통해 화면에 표시됩니다.
 </details>
 
----
 <details>
   <summary>세부 흐름 예시</summary>
 ## Ex) 세부 흐름 예시
