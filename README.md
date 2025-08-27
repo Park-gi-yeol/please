@@ -139,99 +139,46 @@ src
 </br>
 
 ## 5. 핵심 트러블 슈팅
-### 5.1. 컨텐츠 필터와 페이징 처리 문제
-- 저는 이 서비스가 페이스북이나 인스타그램 처럼 가볍게, 자주 사용되길 바라는 마음으로 개발했습니다.  
-때문에 페이징 처리도 무한 스크롤을 적용했습니다.
+### 5.1. Git-hub 연결
+| **이슈 사항** | Git-hub의 연결 |
+| --- | --- |
 
-- 하지만 [무한스크롤, 페이징 혹은 “더보기” 버튼? 어떤 걸 써야할까](https://cyberx.tistory.com/82) 라는 글을 읽고 무한 스크롤의 단점들을 알게 되었고,  
-다양한 기준(카테고리, 사용자, 등록일, 인기도)의 게시물 필터 기능을 넣어서 이를 보완하고자 했습니다.
+## ⁉ 해결 단계
 
-- 그런데 게시물이 필터링 된 상태에서 무한 스크롤이 동작하면,  
-필터링 된 게시물들만 DB에 요청해야 하기 때문에 아래의 **기존 코드** 처럼 각 필터별로 다른 Query를 날려야 했습니다.
+- **시도 1. 기존 프로젝트에서 Push/Pull 시도**
+    - 팀원 간 충돌 발생
+    - 일부 팀원만 Pull 성공
+    
+- **시도 2. git-hub 프로젝트 생성부터 다시 시작**
+    - 동일한 오류 반복 발생
+    - Push는 성공했지만 Pull은 계속 실패
+    
+- **시도 3.** “**.metadata**”로 인한 충돌 오류 발견
+    - `.gitignore` 파일 생성하여 `.metadata` 제외 시도
+    - 여전히 충돌 문제 해결되지 않음
 
-<details>
-<summary><b>기존 코드</b></summary>
-<div markdown="1">
+## ❓ 분석 단계
 
-~~~java
-/**
- * 게시물 Top10 (기준: 댓글 수 + 좋아요 수)
- * @return 인기순 상위 10개 게시물
- */
-public Page<PostResponseDto> listTopTen() {
+| --- | --- |
+| **원인** | **사전 상황**  
+→ Java에서 Export한 프로젝트 파일을 팀원들과 공유함  
+→ 공유된 파일 경로에 GitHub 저장소 경로를 그대로 설정함  
 
-    PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "rankPoint", "likeCnt");
-    return postRepository.findAll(pageRequest).map(PostResponseDto::new);
-}
+**문제 발생 원인**  
+→ 공유된 경로에 이미 동일한 파일들이 존재  
+→ GitHub에서 Pull 시, 로컬 경로에 중복 파일이 있어 병합 불가  
+→ 이로 인해 Pull 작업이 실패하고 충돌 오류 발생 |
 
-/**
- * 게시물 필터 (Tag Name)
- * @param tagName 게시물 박스에서 클릭한 태그 이름
- * @param pageable 페이징 처리를 위한 객체
- * @return 해당 태그가 포함된 게시물 목록
- */
-public Page<PostResponseDto> listFilteredByTagName(String tagName, Pageable pageable) {
+## ❗ 해결 완료
 
-    return postRepository.findAllByTagName(tagName, pageable).map(PostResponseDto::new);
-}
+| **해결 방법** | **정상적인 GitHub 사용 방법 (최초 Push 팀원 제외)** |
+| --- | --- |
+| 동일한 파일명을 가진 **빈 폴더**에 GitHub 저장소 경로를 설정한 이후, 순서대로 `add → commit → pull 또는 push` 수행. 충돌 없이 GitHub 연동 및 협업 가능. |
 
-// ... 게시물 필터 (Member) 생략 
+**p.s**
+- **`.gitignore` 파일 관련**: 시도 3에서 직접 생성하려 했던 `.gitignore` 파일은 실제로는 **Pull 과정에서 자동 생성됨**. 따라서 별도로 만들 필요 없음.
+- **`.metadata` 충돌 문제**: `.gitignore`에 의해 자동으로 제외되므로 충돌 없이 GitHub 사용 가능.
 
-/**
- * 게시물 필터 (Date)
- * @param createdDate 게시물 박스에서 클릭한 날짜
- * @return 해당 날짜에 등록된 게시물 목록
- */
-public List<PostResponseDto> listFilteredByDate(String createdDate) {
-
-    // 등록일 00시부터 24시까지
-    LocalDateTime start = LocalDateTime.of(LocalDate.parse(createdDate), LocalTime.MIN);
-    LocalDateTime end = LocalDateTime.of(LocalDate.parse(createdDate), LocalTime.MAX);
-
-    return postRepository
-                    .findAllByCreatedAtBetween(start, end)
-                    .stream()
-                    .map(PostResponseDto::new)
-                    .collect(Collectors.toList());
-    }
-~~~
-
-</div>
-</details>
-
-- 이 때 카테고리(tag)로 게시물을 필터링 하는 경우,  
-각 게시물은 최대 3개까지의 카테고리(tag)를 가질 수 있어 해당 카테고리를 포함하는 모든 게시물을 질의해야 했기 때문에  
-- 아래 **개선된 코드**와 같이 QueryDSL을 사용하여 다소 복잡한 Query를 작성하면서도 페이징 처리를 할 수 있었습니다.
-
-<details>
-<summary><b>개선된 코드</b></summary>
-<div markdown="1">
-
-~~~java
-/**
- * 게시물 필터 (Tag Name)
- */
-@Override
-public Page<Post> findAllByTagName(String tagName, Pageable pageable) {
-
-    QueryResults<Post> results = queryFactory
-            .selectFrom(post)
-            .innerJoin(postTag)
-                .on(post.idx.eq(postTag.post.idx))
-            .innerJoin(tag)
-                .on(tag.idx.eq(postTag.tag.idx))
-            .where(tag.name.eq(tagName))
-            .orderBy(post.idx.desc())
-                .limit(pageable.getPageSize())
-                .offset(pageable.getOffset())
-            .fetchResults();
-
-    return new PageImpl<>(results.getResults(), pageable, results.getTotal());
-}
-~~~
-
-</div>
-</details>
 
 </br>
 
