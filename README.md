@@ -42,7 +42,12 @@ src
 ---
 
 ## 🧱 ERD 설계
-![ERD 이미지](https://blogger.googleusercontent.com/img/a/AVvXsEi7V1oDAnFlLCN4UQFdyZp2wr0e9W5EUfHBL1GwDCupc_tGxHUib8FRiIwdgRWeoaTWpZLIrDAuGTXp5PNaE8rps5vkHbcnQUzBYELUXr5d3jUTls6On12sB19S0_4Jgpj53PTZYd7G8aXI2HtD5WGdy_FkyK11_cXnp-r-gs3Nyj7KjhlfQObC5O6bUujt)
+## ​ ERD 설계
+
+## ​ ERD 설계
+
+![ERD 이미지](https://blogger.googleusercontent.com/img/a/AVvXsEhHI7l5w5TLk1KKsSJKI92vCp4DRjETbEInMoAX_zwySr-TBkOwCcwbc3EKqn8NRd8d4nOSb-KTaWzfEkr6ou7ERiF8-i6O36A5zg4pun1sjBm71O2U2ZmWzMlHjyaB_AIDfOKV9smRHsXRyhR1i23kjtuOnJWStzXdDLzPCEqGWjxh43RaJEjGv_frJ6lZ)
+
 
 ---
 
@@ -233,7 +238,7 @@ WHEN NOT MATCHED THEN
 ---
 
 ## 🪞 회고 / 느낀점
-> 🔗 [프로젝트 회고 블로그 보기](https://zuminternet.github.io/ZUM-Pilot-integer/)
+> 🔗 [프로젝트 회고 Notion 보기](https://www.notion.so/sdtunit032526/6-KPT-256ae0eec955813fab01c621e5ad6f00)
 
 - 협업 중 Git 충돌, DB 오류, 외래키 제약 조건 등 다양한 문제에 부딪힘
 - 실무에서 발생할 수 있는 트러블을 경험하며, 이를 문서화하고 해결해보는 좋은 기회였음
