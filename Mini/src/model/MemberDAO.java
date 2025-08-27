@@ -20,12 +20,10 @@ public class MemberDAO {
 			String user = "CGI_25IS_GA_P1_4";
 			String password = "smhrd4";
 			conn = DriverManager.getConnection(url, user, password);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
 	// 자원반납
 	private static void getClose() {
 		try {
@@ -66,19 +64,16 @@ public class MemberDAO {
 	public String login(MemberVO mvo) {
 	       try {
 	           getConn();  // DB 연결
-
 	           // 아이디 존재 여부 먼저 확인
 	           String sql = "SELECT MEMBER_PW, NAME FROM MEMBER WHERE MEMBER_ID = ?";
 	           psmt = conn.prepareStatement(sql);
 	           psmt.setString(1, mvo.getId());
 	           rs = psmt.executeQuery();
-
 	           if (!rs.next()) {
 	               return "NO_ID";   // 아이디 없음
 	           } else {
 	               String dbPw = rs.getString("MEMBER_PW");
 	               String name = rs.getString("NAME");
-
 	               if (dbPw.equals(mvo.getPw())) {
 	                   return name;  // 로그인 성공 (회원 이름 반환)
 	               } else {
@@ -92,13 +87,11 @@ public class MemberDAO {
 	       }
 	       return "ERROR"; // 기타 오류
 	   }
-
 	// 점수 기록 메소드
 	public ArrayList<MemberVO> showStats() {
 	       ArrayList<MemberVO> list = new ArrayList<>();
 	       try {
 	           getConn();
-
 	           // 1. GAME → RESULT 통계 갱신
 	           String mergeSql = "MERGE INTO RESULT r " +
 	                             "USING ( " +
@@ -114,16 +107,13 @@ public class MemberDAO {
 	                             "WHEN NOT MATCHED THEN " +
 	                             "  INSERT (MEMBER_ID, TOTAL_SCORE, AVG_TRY, WIN_RATE) " +
 	                             "  VALUES (g.MEMBER_ID, g.TOTAL_SCORE, g.AVG_TRY, g.WIN_RATE)";
-	           
 	           psmt = conn.prepareStatement(mergeSql);
 	           psmt.executeUpdate();
 	           psmt.close();
-
 	           // 2. RESULT 테이블에서 통계 조회
 	           String selectSql = "SELECT MEMBER_ID, TOTAL_SCORE, AVG_TRY, WIN_RATE FROM RESULT ORDER BY TOTAL_SCORE DESC";
 	           psmt = conn.prepareStatement(selectSql);
 	           rs = psmt.executeQuery();
-
 	           while(rs.next()) {
 	               MemberVO mvo = new MemberVO();
 	               mvo.setId(rs.getString("MEMBER_ID"));
@@ -132,49 +122,32 @@ public class MemberDAO {
 	               mvo.setWinRate(rs.getDouble("WIN_RATE"));
 	               list.add(mvo);
 	           }
-
 	       } catch(SQLException e) {
 	           e.printStackTrace();
 	       } finally {
 	           getClose();
 	       }
-
 	       return list;
 	   }
-
-
 	// 회원조회
 	public ArrayList<MemberVO> showFind() {
 		ArrayList<MemberVO> list = new ArrayList<MemberVO>();
-
 		try {
 			getConn();
-
 			String sql = "SELECT MEMBER_ID, NAME FROM MEMBER";
-
 			psmt = conn.prepareStatement(sql);
-
 			rs = psmt.executeQuery();
-
 			while (rs.next()) {
 				MemberVO mvo = new MemberVO();
-//				String id = rs.getString("MEMBER_ID");
-//				String name = rs.getString("NAME");
-
-
 				list.add(mvo);
-
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-
 		} finally {
 			getClose();
 		}
 		return list;
-
 	}
-
 	// 점수 저장
 	public void saveResult(MemberVO mvo) {
 		try {
@@ -182,14 +155,11 @@ public class MemberDAO {
 			String sql = "INSERT INTO GAME (RESULT_ID, MEMBER_ID, RESULT, SCORE, COUNT_TRY) "
 					+ "VALUES (LPAD(GAME_SEQ.NEXTVAL, 4, '0'), ?, ?, ?, ?)";
 			psmt = conn.prepareStatement(sql);
-
 			psmt.setString(1, mvo.getId());
 			psmt.setString(2, mvo.getResult());
 			psmt.setInt(3, mvo.getPoint());
 			psmt.setInt(4, mvo.getCount());
-
 			int row = psmt.executeUpdate();
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
