@@ -125,9 +125,8 @@ src
 
 ## 🚨 핵심 트러블 슈팅
 
----
-
-### 5.1 GitHub 연결 문제
+<details>
+<summary><strong>5.1 GitHub 연결 문제</strong></summary>
 
 | **이슈 사항** | GitHub 연결 문제 및 충돌 발생 |
 |---------------|------------------------------|
@@ -158,26 +157,36 @@ src
 - `.gitignore`는 Pull 과정에서 자동 생성됨  
 - `.metadata`는 `.gitignore`로 제외되어 충돌 없음
 
+</details>
+
 ---
 
-### 5.2 ORA-02291 제약 조건 오류
+<details>
+<summary><strong>5.2 ORA-02291 제약 조건 오류</strong></summary>
 
 | **클래스 명** | allLogic |
 | --- | --- |
 | **이슈 사항** | 단일 명령문 실행 중 **ORA-02291** 발생 |
 | **원인** | 게임 중 기록 저장 시 참조하려는 `M_ID`가 회원 테이블에 존재하지 않음 |
 
+---
+
 ### ⁉ 해결 단계
 - 로그인 기능을 포함한 클래스로 테스트 재진행
+
+---
 
 ### ❗ 해결 완료
 
 | **해결 방법** | 게임 기록 저장 전, **로그인을 통해 사용자 정보 선등록**  
 → 로그인 시 `M_ID` 확보 → 외래키 제약 충족 후 기록 저장 가능 |
 
+</details>
+
 ---
 
-### 5.3 MERGE INTO 오류 (데이터 미반영)
+<details>
+<summary><strong>5.3 MERGE INTO 오류 (데이터 미반영)</strong></summary>
 
 | **클래스 명** | MemberDAO |
 | --- | --- |
@@ -217,6 +226,9 @@ WHEN MATCHED THEN
 WHEN NOT MATCHED THEN
   INSERT (MEMBER_ID, TOTAL_SCORE) VALUES (g.MEMBER_ID, g.TOTAL_SCORE);
 ```
+
+</details>
+---
 
 ---
 
