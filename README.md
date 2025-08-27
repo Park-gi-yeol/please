@@ -66,60 +66,85 @@ src
 <summary><b>핵심 기능 설명 펼치기</b></summary>
 <div markdown="1">
 
-### 4.1. 전체 흐름
-![](https://zuminternet.github.io/images/portal/post/2019-04-22-ZUM-Pilot-integer/flow1.png)
+# 게임 프로그램 흐름
 
-### 4.2. 사용자 요청
-![](https://zuminternet.github.io/images/portal/post/2019-04-22-ZUM-Pilot-integer/flow_vue.png)
+이 프로그램은 **회원 관리** 및 **숫자 야구 게임** 기능을 포함하는 Java 기반의 응용 프로그램입니다.
 
-- **URL 정규식 체크** :pushpin: [코드 확인](https://github.com/Integerous/goQuality/blob/b587bbff4dce02e3bec4f4787151a9b6fa326319/frontend/src/components/PostInput.vue#L67)
-  - Vue.js로 렌더링된 화면단에서, 사용자가 등록을 시도한 URL의 모양새를 정규식으로 확인합니다.
-  - URL의 모양새가 아닌 경우, 에러 메세지를 띄웁니다.
+---
 
-- **Axios 비동기 요청** :pushpin: [코드 확인]()
-  - URL의 모양새인 경우, 컨텐츠를 등록하는 POST 요청을 비동기로 날립니다.
+## 4. 핵심 기능
 
-### 4.3. Controller
+### 4.1 전체 흐름
 
-![](https://zuminternet.github.io/images/portal/post/2019-04-22-ZUM-Pilot-integer/flow_controller.png)
-
-- **요청 처리** :pushpin: [코드 확인](https://github.com/JungHyung2/gitio.io/blob/d35d29b64c0e8b9653862bdcc1e6b997d2436ec9/index.html#L57C1-L57C202)
-  - Controller에서는 요청을 화면단에서 넘어온 요청을 받고, Service 계층에 로직 처리를 위임합니다.
-
-- **결과 응답** :pushpin: [코드 확인]()
-  - Service 계층에서 넘어온 로직 처리 결과(메세지)를 화면단에 응답해줍니다.
-
-### 4.4. Service
-
-![](https://zuminternet.github.io/images/portal/post/2019-04-22-ZUM-Pilot-integer/flow_service1.png)
-
-- **Http 프로토콜 추가 및 trim()** :pushpin: [코드 확인]()
-  - 사용자가 URL 입력 시 Http 프로토콜을 생략하거나 공백을 넣은 경우,  
-  올바른 URL이 될 수 있도록 Http 프로토콜을 추가해주고, 공백을 제거해줍니다.
-
-- **URL 접속 확인** :pushpin: [코드 확인]()
-  - 화면단에서 모양새만 확인한 URL이 실제 리소스로 연결되는지 HttpUrlConnection으로 테스트합니다.
-  - 이 때, 빠른 응답을 위해 Request Method를 GET이 아닌 HEAD를 사용했습니다.
-  - (HEAD 메소드는 GET 메소드의 응답 결과의 Body는 가져오지 않고, Header만 확인하기 때문에 GET 메소드에 비해 응답속도가 빠릅니다.)
-
-  ![](https://zuminternet.github.io/images/portal/post/2019-04-22-ZUM-Pilot-integer/flow_service2.png)
-
-- **Jsoup 이미지, 제목 파싱** :pushpin: [코드 확인]()
-  - URL 접속 확인결과 유효하면 Jsoup을 사용해서 입력된 URL의 이미지와 제목을 파싱합니다.
-  - 이미지는 Open Graphic Tag를 우선적으로 파싱하고, 없을 경우 첫 번째 이미지와 제목을 파싱합니다.
-  - 컨텐츠에 이미지가 없을 경우, 미리 설정해둔 기본 이미지를 사용하고, 제목이 없을 경우 생략합니다.
-
-
-### 4.5. Repository
-
-![](https://zuminternet.github.io/images/portal/post/2019-04-22-ZUM-Pilot-integer/flow_repo.png)
-
-- **컨텐츠 저장** :pushpin: [코드 확인]()
-  - URL 유효성 체크와 이미지, 제목 파싱이 끝난 컨텐츠는 DB에 저장합니다.
-  - 저장된 컨텐츠는 다시 Repository - Service - Controller를 거쳐 화면단에 송출됩니다.
-
-</div>
+<details>
+  <summary>전체 흐름</summary>
+  - 프로그램은 사용자의 요청에 따라 로그인, 메뉴 선택, 게임 실행 등의 흐름으로 진행됩니다.
+  - 핵심 기능은 회원 관리와 숫자 야구 게임이며, 각 요청에 따라 컨트롤러가 처리하고 서비스가 로직을 실행하며, 결과를 화면에 표시합니다.
 </details>
+
+### 4.2 사용자 요청
+
+<details>
+  <summary>사용자 요청</summary>
+  - **로그인 요청**:
+    - 사용자가 로그인 정보를 입력하고, 서버로 요청을 보냅니다.
+    - `MemberController`에서 로그인 요청을 처리합니다.
+
+  - **게임 시작 요청**:
+    - 사용자가 게임을 시작하려면, 메뉴에서 게임을 선택합니다.
+    - `NumberBaseballGame` 클래스에서 게임 설정 및 실행이 처리됩니다.
+</details>
+
+### 4.3 Controller
+
+<details>
+  <summary>Controller</summary>
+  - **요청 처리**:
+    - `MemberController`는 사용자의 요청을 받고, 이를 처리하기 위해 `MemberDAO` 또는 `NumberBaseballGame`으로 요청을 위임합니다.
+  
+  - **결과 응답**:
+    - `MemberController`는 처리된 결과를 화면에 응답으로 반환합니다.
+    - 예: 로그인 성공/실패 메시지, 게임 시작 및 결과 정보.
+</details>
+
+### 4.4 Service
+
+<details>
+  <summary>Service</summary>
+  - **회원 로그인 처리**:
+    - 사용자가 입력한 로그인 정보가 정확한지 `MemberDAO`에서 데이터베이스를 통해 확인합니다.
+    - 로그인 성공 시, 사용자 정보를 화면에 표시합니다.
+  
+  - **게임 설정**:
+    - 사용자가 선택한 게임 난이도에 맞게 `NumberBaseballGame`에서 게임을 설정합니다.
+    - 게임의 규칙을 설정하고, 사용자가 추측한 숫자를 정답과 비교하여 결과를 처리합니다.
+</details>
+
+### 4.5 Repository
+
+<details>
+  <summary>Repository</summary>
+  - **데이터 저장**:
+    - `MemberDAO`는 사용자가 입력한 정보 및 게임 결과를 데이터베이스에 저장합니다.
+    - 저장된 데이터는 `MemberController`를 통해 화면에 표시됩니다.
+</details>
+
+---
+
+## Ex) 세부 흐름 예시
+
+### 5.1 로그인 흐름
+1. 사용자가 로그인 정보(`id`, `password`)를 입력합니다.
+2. `MemberController`에서 로그인 요청을 받습니다.
+3. `MemberDAO`가 DB에서 로그인 정보가 맞는지 확인합니다.
+4. 로그인 성공/실패에 대한 결과를 화면에 응답합니다.
+
+### 5.2 게임 흐름
+1. 사용자가 게임의 난이도를 선택합니다.
+2. `NumberBaseballGame`에서 선택된 난이도에 맞는 게임을 설정합니다.
+3. 사용자가 숫자를 추측하여 게임을 진행합니다.
+4. `NumberBaseballGame`에서 정답을 비교하고, 결과를 화면에 표시합니다.
+
 
 </br>
 
