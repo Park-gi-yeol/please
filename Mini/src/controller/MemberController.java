@@ -25,7 +25,7 @@ public class MemberController {
 		this.nbg = nbg;
 	}
 	
-	//게임을 돌리는? 메서드 
+	//게임을 로직을 실행하는  메서드 
 	public void playGame(MemberVO mvo) {
 		nbg.createAnswer();
 		nbg.compareAnswer(mvo);

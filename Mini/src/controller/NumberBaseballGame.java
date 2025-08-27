@@ -8,7 +8,7 @@ import model.MemberVO;
 import view.MemberView;
 
 public class NumberBaseballGame {
-	// 접근제한자 설정했어야하는데 어떻게 건들어야할지 모르겠어서 이것도 쌤한테 물어봐야될듯
+	
 	Random rd = new Random();
 	Scanner sc = new Scanner(System.in);
 	int level; //난이도
