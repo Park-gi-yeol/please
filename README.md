@@ -57,18 +57,10 @@ src
 ## 3. ERD 설계
 ![ERD](https://blogger.googleusercontent.com/img/a/AVvXsEi7V1oDAnFlLCN4UQFdyZp2wr0e9W5EUfHBL1GwDCupc_tGxHUib8FRiIwdgRWeoaTWpZLIrDAuGTXp5PNaE8rps5vkHbcnQUzBYELUXr5d3jUTls6On12sB19S0_4Jgpj53PTZYd7G8aXI2HtD5WGdy_FkyK11_cXnp-r-gs3Nyj7KjhlfQObC5O6bUujt))
 
-## 4. 핵심 기능
-이 서비스의 핵심 기능은 컨텐츠 등록 기능입니다.  
-사용자는 단지 컨텐츠의 카테고리를 선택하고, URL만 입력하면 끝입니다.  
-이 단순한 기능의 흐름을 보면, 서비스가 어떻게 동작하는지 알 수 있습니다.  
 
 <details>
 <summary><b>핵심 기능 설명 펼치기</b></summary>
 <div markdown="1">
-
-# 게임 프로그램 흐름
-
-이 프로그램은 **회원 관리** 및 **숫자 야구 게임** 기능을 포함하는 Java 기반의 응용 프로그램입니다.
 
 ---
 
@@ -146,7 +138,12 @@ src
 4. `NumberBaseballGame`에서 정답을 비교하고, 결과를 화면에 표시합니다.
 
 <details>
-  
+  <summary>5.3 그 이후 흐름</summary>
+  - **게임 결과 처리**:
+    - 게임 결과(정답 맞추기/틀리기)를 `NumberBaseballGame`에서 확인하고, 결과를 화면에 표시합니다.
+    - 게임 종료 후, 다시 메인 메뉴나 게임 재시작을 선택할 수 있는 흐름으로 이어집니다.
+</details>
+
 </br>
 
 ## 5. 핵심 트러블 슈팅
