@@ -203,7 +203,41 @@ src
 → 게임 중 데이터 삽입 시 외래 키 제약 조건 충족 |
 
 ### 5.3. DB연결 문제2
-MERGE INTO RESULT 실행 시 쿼리 오류 및 데이터 미반영
+## ❓분석 단계
+
+| **클래스 명** | MemberDAO |
+| --- | --- |
+| **이슈 사항** | `MERGE INTO RESULT` 실행 시 쿼리 오류 및 데이터 미반영 |
+| **원인** | `MERGE` 구문 자체는 정상 작동하지만, `g.MEMBER_ID`가 null인 경우 삽입 또는 갱신 안됨 |
+
+## ⁉해결 단계
+
+- **시도1. merge 쿼리점검**
+
+    → 구문상 문제 없음
+
+- **시도2. result 문제확인**
+
+    → `RESULT` 테이블 컬럼 확인
+
+## ❗해결 완료
+
+- GAME 테이블에서 null 값 제거 또는 기본값 처리
+
+```sql
+-- GAME 테이블에서 null 값 제거 또는 기본값 처리
+UPDATE GAME SET COUNT_TRY = 0 WHERE COUNT_TRY IS NULL;
+MERGE 쿼리 내부에 WHERE MEMBER_ID IS NOT NULL 조건 추가
+
+sql
+코드 복사
+-- MERGE 쿼리 내부에 WHERE MEMBER_ID IS NOT NULL 조건 추가
+
+SELECT MEMBER_ID, SUM(SCORE) AS TOTAL_SCORE, ...
+FROM GAME
+WHERE MEMBER_ID IS NOT NULL
+GROUP BY MEMBER_ID
+Java 코드에서 rs.next() 결과가 없을 경우 메시지 출력 추가
     
 </br>
 
