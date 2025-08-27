@@ -27,7 +27,7 @@
 
 ## 3. ERD 설계
 ![](https://www.notion.so/sdtunit032526/256ae0eec9558175b5d9c7ae61aba0bc?source=copy_link#257ae0eec95580dbb415d4cac22c9519)
-![](C:\Users\smhrd\Desktop\readme)
+![]([C:\Users\smhrd\Desktop\readme](https://www.blogger.com/blog/post/edit/4456485243099542919/1052446325544136511)
 
 ## 4. 핵심 기능
 이 서비스의 핵심 기능은 컨텐츠 등록 기능입니다.  
