@@ -117,7 +117,8 @@ src
 </details>
 
 ---
-
+<details>
+  <summary>세부 흐름 예시</summary>
 ## Ex) 세부 흐름 예시
 
 ### 5.1 로그인 흐름
@@ -131,6 +132,7 @@ src
 2. `NumberBaseballGame`에서 선택된 난이도에 맞는 게임을 설정합니다.
 3. 사용자가 숫자를 추측하여 게임을 진행합니다.
 4. `NumberBaseballGame`에서 정답을 비교하고, 결과를 화면에 표시합니다.
+</details>
 
 <details>
   <summary>5.3 그 이후 흐름</summary>
