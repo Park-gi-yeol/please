@@ -55,7 +55,7 @@ src
 </br>
 
 ## 3. ERD 설계
-![]([https://.blogspot.com/2025/08/erd.html](https://frostmist.blogspot.com/2025/08/erd.html))
+![]([https://.blogspot.com/2025/08/erd.html](https://frostmist.blogspot.com/2025/08/erd.html)
 
 ## 4. 핵심 기능
 이 서비스의 핵심 기능은 컨텐츠 등록 기능입니다.  
