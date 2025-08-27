@@ -55,7 +55,7 @@ src
 </br>
 
 ## 3. ERD 설계
-![]([https://.blogspot.com/2025/08/erd.html](https://frostmist.blogspot.com/2025/08/erd.html)
+![ERD](https://www.notion.so/sdtunit032526/3-ER-256ae0eec95581959399cc35d1e494392?source=copy_link#257ae0eec955802f80b2e083a476c9fe)
 
 ## 4. 핵심 기능
 이 서비스의 핵심 기능은 컨텐츠 등록 기능입니다.  
